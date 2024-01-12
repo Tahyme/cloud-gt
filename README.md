@@ -20,25 +20,6 @@ Le but du projet est de déployer une application de gestion d'inventaire. Par l
 # Route
     => Regarder dans le README.md flask_app
 
-# PROBLEME RENCONTRE
-
-Problemes qui ont ralenti => 
-- PC perso qui on ralenti le developpement (Bug, freeze)
-- Compatibilité dans le dockerfile entre le back et front (1j d'investigation pour résoudre le probleme)
-- Azure => compte hitema impossible de ce connecter avec le mercredi aprem et jeudi
-
-# Docker deployé sur azure
-
-commande utilisé :
-
-    docker build -t stockmanagement .
-    docker images
-    docker tag stockmanagement testdockerhelloworldh3.azurecr.io/stockmanagement:latest
-    docker login testdockerhelloworldh3.azurecr.io
-    docker push testdockerhelloworldh3.azurecr.io/stockmanagement
-
-![image](https://github.com/BlazingBurn/Microservice_implement_stockManagement/assets/49305403/3e01fec8-97e0-4cc4-82ac-a5c023fecf13)
-
 ![image](https://github.com/Tahyme/cloud-gt/assets/68480140/349e82dc-5ab5-437e-be0e-ad22ff6da115)
 
 
