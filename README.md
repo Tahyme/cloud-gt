@@ -1,4 +1,4 @@
-# microservice-deploy-H3
+# CLOUD GT :::
 
 Rapport mi-parcours
 
@@ -38,6 +38,9 @@ commande utilisé :
     docker push testdockerhelloworldh3.azurecr.io/stockmanagement
 
 ![image](https://github.com/BlazingBurn/Microservice_implement_stockManagement/assets/49305403/3e01fec8-97e0-4cc4-82ac-a5c023fecf13)
+
+![image](https://github.com/Tahyme/cloud-gt/assets/68480140/349e82dc-5ab5-437e-be0e-ad22ff6da115)
+
 
 # A FAIRE (Dans la semaine si le temps le permet)
 - Déployé sur azure
