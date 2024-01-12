@@ -3,7 +3,7 @@ metricbeat.config.modules:
   reload.enabled: false
 
 output.elasticsearch:
-  hosts: ["elasticsearch-backend:9200"]
+  hosts: ["elasticsearch:9200"]
 
 metricbeat.modules:
 - module: system
@@ -18,6 +18,6 @@ metricbeat.modules:
     by_cpu: 5
     by_memory: 5
 
-- module: docker
-  hosts: ["unix:///var/run/docker.sock"]
-  period: 10s
+# - module: docker
+#   hosts: ["npipe:////./pipe/docker_engine"]
+#   period: 10s

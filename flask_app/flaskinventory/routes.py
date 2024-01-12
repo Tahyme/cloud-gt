@@ -1,6 +1,6 @@
 from flask import  render_template,url_for,redirect,flash,request,jsonify
 from flaskinventory import app, es
-from flaskinventory.forms import addproduct,addlocation,moveproduct,editproduct,editlocation
+from flaskinventory.forms import addproduct,addlocation,moveproduct,editproduct,editlocation, ProductSearchForm
 from flaskinventory.models import Location,Product,Movement,Balance
 from datetime import datetime
 import logging
@@ -34,7 +34,6 @@ def product():
 
     if exists == False and request.method == 'GET':
         flash(f'Add products to view', 'info')
-        
     
     elif eform.validate_on_submit() and request.method == 'POST':
         p_id = request.form.get("productid", "")
@@ -59,6 +58,27 @@ def product():
         return redirect('/Product')
         
     return render_template('product.html',title = 'Products', eform=eform, form=form, details=details)
+
+@app.route('/product_search', methods=['GET', 'POST'])
+def product_search():
+    form = ProductSearchForm(request.form)
+    results = []
+    
+    if request.method == 'POST':
+        search_query = request.form.get('query')
+        logging.debug(search_query)
+        if search_query:
+            response = es.search(index='products', body={'query': {'match': {'prod_name': search_query}}})
+            results = response['hits']['hits']
+            logging.debug(response)
+
+    return render_template('product_search.html', form=form, results=results)
+
+@app.route('/search_product')
+def search_product():
+    search_query = request.args.get('query')
+    suggestions = es.search(index='products', body={'query': {'prefix': {'prod_name': search_query}}})
+    return jsonify([{'value': hit['_source']['prod_name']} for hit in suggestions['hits']['hits']])
 
 @app.route("/Location", methods = ['GET', 'POST'])
 def loc():

@@ -1,0 +1,65 @@
+{% extends "overview.html" %}
+{% block content %}
+<div class="container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+     {%if messages %}
+          {%for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+               <h4 style="text-align:center;">{{ message }}</h4>
+            </div>
+          {%endfor%}
+    {%endif %}
+  {%endwith%}
+</div>
+<div class="container">
+
+<h1>Product Search</h1>
+
+  <form action="{{ url_for('product_search') }}" method="POST">
+    {{ form.csrf_token }}
+    <div class="form-group">
+        <label for="search_query">Search:</label>
+        <input type="text" class="form-control typeahead" id="search_query" name="query" placeholder="Enter product name">
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+  <h2>Search Results</h2>
+  {% if results %}
+    <ul>
+      {% for result in results %}
+        <li>{{ result['_source']['prod_name'] }} - {{ result['_source']['prod_qty'] }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No results found.</p>
+  {% endif %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.jquery.js" integrity="sha512-W6rpPvr6GuC2ZK7jWfy4hn4KTlyG+HZP3NAllreIixhP5KEMFa48K9Jw6DCfKdh7RsKsl/PiBpee8Zv6SpLImw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/bloodhound.js" integrity="sha512-QC7UeZNmZ4mAMCL6PcRXp1prlfz2EpCLwh4aBH2lOii/HMAdqsP8LyMY4xMn50AQicajB9OrbvNkc09EMaQ8hg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  // Initialisation Typeahead.js
+  $(document).ready(function () {
+      var products = new Bloodhound({
+          datumTokenizer: Bloodhound.tokenizers.obj.whitespace('value'),
+          queryTokenizer: Bloodhound.tokenizers.whitespace,
+          remote: {
+              url: '/search_product?query=%QUERY',
+              wildcard: '%QUERY'
+          }
+      });
+
+      $('#search_query').typeahead({
+          hint: true,
+          highlight: true,
+          minLength: 1
+      }, {
+          name: 'products',
+          display: 'value',
+          source: products
+      });
+      console.log("Auto-completion initialized.");
+  });
+</script>
+
+{% endblock content %}

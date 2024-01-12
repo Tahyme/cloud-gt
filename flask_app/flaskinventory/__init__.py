@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = '323b22caac41acbf'
 
 # Configuration d'Elasticsearch
-es = Elasticsearch([{'host': 'elasticsearch-backend', 'port': 9200, 'scheme': 'http'}])
+es = Elasticsearch([{'host': 'elasticsearch', 'port': 9200, 'scheme': 'http'}])
 
 # Liste des index à vérifier et initialiser
 indexes_to_check = ['locations', 'products', 'movements', 'balances']

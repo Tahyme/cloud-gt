@@ -21,6 +21,6 @@ COPY requirements.txt requirements.txt
 # Installe les dépendances Python à partir du fichier requirements.txt
 RUN pip3 install -r requirements.txt
 
-COPY ./test.py /app
+COPY . /app
 
 CMD [ "python3", "-u", "test.py" ]

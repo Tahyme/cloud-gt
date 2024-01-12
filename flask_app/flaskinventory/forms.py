@@ -31,3 +31,7 @@ class moveproduct(FlaskForm):
         'Destination')
     mprodqty = IntegerField('Quantity', validators=[NumberRange(min=5, max=1000000),DataRequired()])
     movesubmit = SubmitField('Move')
+
+class ProductSearchForm(FlaskForm):
+    search_query = StringField('Search Product')
+    searchsubmit = SubmitField('Search')
