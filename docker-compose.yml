@@ -58,44 +58,44 @@ services:
       - ./flask_app:/app
       - ./test:/tests
 
-# logstash:
-#   image: docker.elastic.co/logstash/logstash:7.9.3
-#   ports:
-#     - "5001:5000"
-#   volumes:
-#     - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-#   depends_on:
-#       elasticsearch:
-#         condition: service_healthy
-#   networks:
-#     - my-network
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.9.3
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    depends_on:
+        elasticsearch:
+          condition: service_healthy
+    networks:
+      - my-network
 
-# kibana:
-#   image: docker.elastic.co/kibana/kibana:7.9.3
-#   environment:
-#     - ELASTICSEARCH_URL=http://elasticsearch:9200
-#   ports:
-#       - "5601:5601"
-#   depends_on:
-#     elasticsearch:
-#         condition: service_healthy
-#   networks:
-#     - my-network
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.3
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    ports:
+        - "5601:5601"
+    depends_on:
+      elasticsearch:
+          condition: service_healthy
+    networks:
+      - my-network
 
-# metricbeat:
-#   image: docker.elastic.co/beats/metricbeat:7.9.3
-#   user: root
-#   volumes:
-#     - /proc:/hostfs/proc:ro
-#     - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
-#     - /:/hostfs:ro
-#     - ./metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
-#   command: ["-e","-strict.perms=false"]
-#   depends_on:
-#     elasticsearch:
-#         condition: service_healthy
-#   networks:
-#     - my-network
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:7.9.3
+    user: root
+    volumes:
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /:/hostfs:ro
+      - ./metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml:ro
+    command: ["-e","-strict.perms=false"]
+    depends_on:
+      elasticsearch:
+          condition: service_healthy
+    networks:
+      - my-network
 
 networks:
   my-network:
