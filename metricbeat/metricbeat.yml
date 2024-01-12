@@ -1,0 +1,23 @@
+metricbeat.config.modules:
+  path: ${path.config}/modules.d/*.yml
+  reload.enabled: false
+
+output.elasticsearch:
+  hosts: ["elasticsearch-backend:9200"]
+
+metricbeat.modules:
+- module: system
+  period: 10s
+  metricsets:
+    - cpu
+    - memory
+    - network
+    - process
+    - process_summary
+  process.include_top_n:
+    by_cpu: 5
+    by_memory: 5
+
+- module: docker
+  hosts: ["unix:///var/run/docker.sock"]
+  period: 10s

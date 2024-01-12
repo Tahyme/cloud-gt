@@ -1,0 +1,59 @@
+Objectif 
+Developper un projet full stack en architecture micro services en respectant au mieux un cahier des charge techniques 
+
+ 
+
+Specifications
+
+Ci-joint la liste de spécifications de votre projet de deuxième année du module Microservices. Le projet sera évalué sur la base de 4 critères. Les deux premiers critères sont nécessaires pour avoir la moyenne (10/20).  
+
+ 
+
+Composants techniques de bases : 
+
+Votre projet contient un frontend avec a minima deux routes (type page d'accueil et route générique). 
+Votre projet contient un backend avec une base de données dans un container spécifique. Vous expliquerez le choix de votre technologie de base de données (relationnelles, ou non relationnelles) 
+Votre base de données est fonctionnelle et composée d’au moins une table/collection ainsi qu’un schéma explicite. 
+Votre projet contient au moins 2 Dockerfile.  
+Votre projet contient au moins un fichier docker-compose.yml
+Vous avez push au moins une image docker sur un container registry (type docker-hub, Azure registery, GCR ...)
+Votre projet est accessible PUBLIQUEMENT en ligne sur un gestionnaire de version type GitHub, bitbucket, gitlab… 
+Votre projet a été builder sans erreur (joindre une capture d’écran dans votre README.md) ainsi que les adresse publiques des images que vous avez build durant le projet 
+Vous avez a minima des fichiers (bash ou autre) de tests qui : 
+test la santée de vos conteneurs
+test le bon fonctionnement de votre application (front / back)
+test du bon fonctionnement de votre base de données 
+ 
+
+Architecture
+
+Vous avez schématisé l’architecture de votre projet sous format vectoriel (draw.io ou autre web tools) avec notamment : 
+les différents composants/services de votre application
+les liens entre ces différents composants/services : protocoles et requêtes types (POST,GET,… in curl/json format)
+les ports exposés sont mis en valeur (côté client et coté backend)
+ 
+
+Déploiement & production 
+
+Votre projet dispose d’un service de reverse proxy type nginx ou traefik. 
+SSL et HTTPS 
+Votre projet dispose d’une documentation auto générée type OpenAPI (formerly Swagger Specification). 
+Vous avez utilisé un orchestrateur type docker-swarm ou kubernetes pour orchestrer vos conteneurs. 
+Votre projet est déployé chez un fournisseur Cloud type (Heroku, GCP, Azure, AWS...) et dispose d’un URL d'accès public et sécurisé  
+Vous avez automatisé des tests dans votre fichier docker-compose.yml 
+Vous avez assurer le monitoring en temps réel de vos containers et pouvez partager un dashboard de monitoring via une URL publique externe (graphana, prometheus, weavescope…)
+Votre solution dispose d’un système de gestion de files d’attente ou de notification sous forme de container (rabbitmq,celery...) ou cloud pub/sub, serverless solutions... 
+ 
+
+Clean Code 
+
+Votre projet dispose d’une documentation claire et concise qui explique les différents endpoints et requêtes type (POST,GET,UPDATE...) de votre application ainsi que les ports exposés 
+Il y a des commentaires dans TOUS vos fichiers de code. 
+Votre README.md à la racine de votre GitHub contient les explications nécessaires pour build et run votre projet ainsi qu’une demo online sans erreur. 
+ 
+
+Rapport mi-parcours (18/10/2023)
+
+Vous devez en quelques lignes décrire votre projet et détailler son architecture ainsi que les technologies que vous avez prévues d'utiliser. 
+Vous ferez un push de votre resumé sur votre  README.md à la racine de votre repo git
+

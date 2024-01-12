@@ -1,0 +1,104 @@
+version: '3'
+
+services:
+
+  # Service du backend ElasticSearch
+  elasticsearch-backend:
+    build:
+      context: ./elastic_backend
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - my-network
+
+  # Service du frontend Flask
+  flask-frontend:
+    build:
+      context: ./flask_app
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch-backend:9200
+    ports:
+      - "5000:5000"
+    depends_on:
+      elasticsearch-backend:
+        condition: service_healthy
+    networks:
+      - my-network
+      - mynetworknginx
+
+  nginx-proxy:
+    image: nginx
+    container_name: nginx-proxy
+    ports:
+      - "80:80"
+      - "443:443"
+    networks: 
+      - mynetworknginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./certs:/etc/nginx/certs
+    depends_on:
+      - flask-frontend
+    restart: always
+
+  tests:
+    build:
+      context: ./test
+    depends_on:
+      - flask-frontend
+      - elasticsearch-backend
+    volumes:
+      - ./flask_app:/app
+      - ./test:/tests
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.9.3
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    depends_on:
+        elasticsearch-backend:
+          condition: service_healthy
+    networks:
+      - my-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.9.3
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch-backend:9200
+    ports:
+        - "5601:5601"
+    depends_on:
+      elasticsearch-backend:
+          condition: service_healthy
+    networks:
+      - my-network
+
+  metricbeat:
+    image: docker.elastic.co/beats/metricbeat:7.9.3
+    user: root
+    volumes:
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      - /:/hostfs:ro
+      - ./metricbeat/metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+    command: ["-system.hostfs=/hostfs"]
+    depends_on:
+      elasticsearch-backend:
+          condition: service_healthy
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+  mynetworknginx:
+    driver: bridge
